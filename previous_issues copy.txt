@@ -1,0 +1,143 @@
+<?php include('header.php')?>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="card mt-2 shadow p-3 mb-5 bg-body rounded">
+            <div class="card-header text-center">
+                <h3 class = "text-danger fw-bold"><i>All Papers</i></h3>
+            </div>
+            
+            <div class="card-body">
+                <!--Start: Issue 1 -->
+                <?php 
+                    $select_new_paper_issue1 = "SELECT * FROM `new_paper` WHERE `published_status` = '1' AND `issue_info` = 'Issue 1' ORDER BY `updated_at` DESC LIMIT 3 ";
+                    $run_select_new_paper_issue1 = mysqli_query($conn, $select_new_paper_issue1);
+                    
+                    if(mysqli_num_rows($run_select_new_paper_issue1)>0)
+                    {
+                        ?>
+                        <div class="row justify-content-center border">
+                            <h3 class = "text-center mb-3"><i>Issue 1</i> </h3>
+                            <?php 
+                                while($row1 = mysqli_fetch_assoc($run_select_new_paper_issue1))
+                                {
+                                    ?>
+                                    <div class="col-lg-4 col-md-4 col-12 mb-2">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h4 class = "text-center">Paper Title: <?php echo $row1['paper_title']?></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <p style = "text-align:justify"><?php echo $row1['paper_abstract']?></p>
+                                            </div>
+                                            <a class = "btn btn-dark fw-bold " href="view_details_user.php?id=<?php echo $row1['id'] ?>">View Details</a>
+                                        </div>
+                                    </div>
+                                    <?php 
+                                }
+                            ?>
+                        </div>
+                        <div class="row border">
+                            <div class="col-lg-4 col-md-4 col-12 mt-2 mb-2">
+                                <a class = "btn btn-primary" href="all_papers_issue_wise.php?issue=Issue 1">Click To See More (Issue 1)</a>
+                            </div>
+                        </div>
+                        <hr>
+                        <?php
+                        
+                    }
+                ?>
+                
+                <!-- End: Issue 1 -->
+                
+                
+                <!-- Start: Issue 2 -->
+                <?php 
+                    $select_new_paper_issue2 = "SELECT * FROM `new_paper` WHERE `published_status` = '1' AND `issue_info` = 'Issue 2' ORDER BY `updated_at` DESC LIMIT 3 ";
+                    $run_select_new_paper_issue2 = mysqli_query($conn, $select_new_paper_issue2);
+                    
+                    // jdi issu2 te kono paper thake tahole show korbe otherwise korbe na.
+                    if(mysqli_num_rows($run_select_new_paper_issue2)>0)
+                    {
+                        ?>
+                        <div class="row justify-content-center border">
+                            <h3 class = "text-center mb-3"><i>Issue 2</i> </h3>
+                            <?php 
+                                
+                                while($row2 = mysqli_fetch_assoc($run_select_new_paper_issue2))
+                                {
+                                    ?>
+                                    <div class="col-lg-4 col-md-4 col-12 mb-2">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h4 class = "text-center">Paper Title: <?php echo $row2['paper_title']?></h4>
+                                            </div>
+                                            
+                                            <div class="card-body">
+                                                <p style = "text-align:justify"><?php echo $row2['paper_abstract']?></p>
+                                            </div>
+                                            <a class = "btn btn-dark fw-bold " href="view_details_user.php?id=<?php echo $row2['id'] ?>">View Details</a>
+                                        </div>
+                                    </div>
+                                    <?php 
+                                }
+                            ?>
+                        </div>
+                        <div class="row border">
+                            <div class="col-lg-4 col-md-4 col-12 mt-2 mb-2">
+                                <a class = "btn btn-primary" href="all_papers_issue_wise.php?issue=Issue 2">Click To See More (Issue 2)</a>
+                            </div>
+                        </div>
+                        <hr>
+                        <?php 
+                    }
+                ?>
+                
+                <!-- End: Issue -->
+                
+                <!-- Start: Issue 3 -->
+                <?php 
+                    $select_new_paper_issue3 = "SELECT * FROM `new_paper` WHERE `published_status` = '1' AND `issue_info` = 'Issue 3' ORDER BY `updated_at` DESC LIMIT 3 ";
+                    $run_select_new_paper_issue3 = mysqli_query($conn, $select_new_paper_issue3);
+                     
+                    // jdi issu3 te kono paper thake tahole show korbe otherwise korbe na. 
+                    if(mysqli_num_rows($run_select_new_paper_issue3)>0)
+                    {
+                        ?>
+                        <div class="row justify-content-center border">
+                            <h3 class = "text-center mb-3"><i>Issue 3</i> </h3>
+                            <?php 
+                               
+                                while($row3 = mysqli_fetch_assoc($run_select_new_paper_issue3))
+                                {
+                                    ?>
+                                    <div class="col-lg-4 col-md-4 col-12 mb-2">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h4 class = "text-center">Paper Title: <?php echo $row3['paper_title']?></h4>
+                                            </div>
+                                            
+                                            <div class="card-body">
+                                                <p style = "text-align:justify"><?php echo $row3['paper_abstract']?></p>
+                                            </div>
+                                            <a class = "btn btn-dark fw-bold " href="view_details_user.php?id=<?php echo $row3['id'] ?>">View Details</a>
+                                        </div>
+                                    </div>
+                                    <?php 
+                                }
+                            ?>
+                        </div>
+                        <div class="row border">
+                            <div class="col-lg-4 col-md-4 col-12 mt-2 mb-2">
+                                <a class = "btn btn-primary" href="all_papers_issue_wise.php?issue=Issue 3">Click To See More (Issue 3)</a>
+                            </div>
+                        </div>
+                        <?php 
+                    }
+                ?>
+                
+                <!-- End: Issue 3 -->
+            </div>
+        </div>
+    </div>
+</div>
+<?php include('footer.php')?>

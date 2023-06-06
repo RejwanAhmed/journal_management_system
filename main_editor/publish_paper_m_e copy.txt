@@ -1,0 +1,198 @@
+<?php include('main_editor_header.php')?>
+<?php include('mail_sending.php')?>
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-12 col-12">
+            <div class="card mt-2 shadow p-3 mb-5 bg-body rounded">
+                <div class="card-header">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-4 col-12"></div>
+                        <div class="col-lg-4 col-12">
+                            <h3 class = "text-center text-secondary fw-bold">Publish A Paper</h3>     
+                        </div>
+                        <div class="col-lg-4 col-12" style = "text-align:right">
+                            <a class = "text-right btn btn-primary mb-2" href="view_published_papers_m_e.php">View Published Papers</a>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="card-body">
+                    
+                    <form action="" method = "POST">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-4 col-md-4 col-12 mb-3">
+                                <div class="input-group input-group-sm mt-1">
+                                    <div class="input-group-prepend">
+                                        <span class = "input-group-text "><i class="fa-solid fa-magnifying-glass "></i></span>
+                                    </div>
+                                    <input type="text" class = "form-control" name = "search_paper_title_wise" id = "search_paper_title_wise" placeholder="Search By Title....." value = "<?php
+                                    if(isset($_POST['show_all']))
+                                    {
+                                        echo "";
+                                    }
+                                    else if(isset($_POST['search_paper_title_wise']))
+                                    {
+                                        echo "$_POST[search_paper_title_wise]";
+                                    }?>" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-4 col-12 text-center mb-3 ">
+                                <input type="submit" name="search" value="Search" class = "form-control btn btn-secondary fw-bold">
+                            </div>
+                            <div class="col-lg-4 col-md-4  col-12 text-center mb-3 ">
+                                <input type="submit" class ="form-control btn btn-secondary fw-bold" name = "show_all" value = "Show All">
+                            </div>
+                        </div>
+                    </form>
+                    
+                    <div class="table-responsive">
+                        <table class = "table table-bordered table-hover text-center">
+                            <thead>
+                                <tr>
+                                    <th>Serial No</th>
+                                    <th>Paper Title</th>
+                                    <th>Submission Date</th>
+                                    <th>View Details</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                    if(isset($_POST['search']))
+                                    {
+                                        $paper_title = $_POST['search_paper_title_wise'];
+                                        if($paper_title!=NULL)
+                                        {
+                                            // published_status = 0 mane paper published hoy nai
+                                            $select_accepted_paper_info = "SELECT * FROM `new_paper` WHERE `paper_title` like '%$paper_title%' AND `paper_status` = '100' AND `published_status` = '0' ORDER BY `id` DESC";
+                                        }
+                                        else
+                                        {
+                                            ?>
+                                            <script>
+                                                window.alert("Please Select At least 1 field");
+                                                window.location = "publish_paper_m_e.php";
+                                            </script>
+                                            <?php
+                                        }
+                                        
+                                    }
+                                    else
+                                    {
+                                        // published_status = 0 mane paper published hoy nai
+                                        $select_accepted_paper_info = "SELECT * FROM `new_paper` WHERE `paper_status` = '100' AND `published_status` = '0' ORDER BY `id` DESC";
+                                    }
+                                    
+                                    $run_select_accepted_paper_info = mysqli_query($conn, $select_accepted_paper_info);
+                                    $serial_no = 1;
+                                    while($row = mysqli_fetch_assoc($run_select_accepted_paper_info))
+                                    {
+                                        ?>
+                                            <tr>
+                                                <td><?php echo $serial_no?></td>
+                                                <td><?php echo $row['paper_title']?></td>
+                                                <td><?php echo date('d-M-Y', strtotime($row['created_at']))?></td>
+                                                <td><a href="view_paper_details_m_e.php?paper_id=<?php echo $row['paper_id'] ?>" class = "btn btn-primary fw-bold">View Details</a></td>
+                                                <td class = "text-success fw-bold"><?php echo "Accepted"?></td>
+                                                
+                                                <td>
+                                                    <!-- Button trigger modal -->
+                                                    <button type="button" class="form-control btn btn-info fw-bold" data-bs-toggle="modal"  data-bs-target="#publish<?php echo $row['id'] ?>">
+                                                        Publish
+                                                    </button>
+                                                    
+                                                     <!--  bootstrap modal to comment -->
+                                                    <div class="modal fade" id="publish<?php echo $row['id'] ?>" tabindex="-1" aria-labelledby="publish" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                            
+                                                                <!-- modal header -->
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="publish">Publish</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                       
+                                                               <form action="" method = "POST">
+                                                                    <!-- id = new_paper table er auto increment value -->
+                                                                    
+                                                                    <input type="hidden" name = "id_new_paper" value = "<?php echo $row['id'] ?>">
+                                                                    <input type="hidden" name = "paper_title" value = <?php echo $row['paper_title']?>>
+                                                                    <input type="hidden" name = "author_id" value = "<?php echo $row['author_id'] ?>">
+                                                                    
+                                                                    
+                                                                    <!-- modal body -->
+                                                                    <div class="modal-body">
+                                                                        <!-- Volume -->
+                                                                        <h6 style = "text-align:left">Please Enter Volume Number: (Ex: Volume 1)<strong class = "text-danger">*</strong></h6>
+                                                                        <input type="text" name="volume" class = "form-control mb-2" required>
+                                                                        <!-- Issue -->
+                                                                        <h6 style = "text-align:left">Please Assign Issue Number: <strong class = "text-danger">*</strong></h6>
+                                                                        
+                                                                        <select class = "form-control" name="issue" id="issue" required>
+                                                                            <option value="" selected>Please Select Issue Number</option>
+                                                                            <option value="Issue 1">Issue 1</option>
+                                                                            <option value="Issue 2">Issue 2</option>
+                                                                            <option value="Issue 3">Issue 3</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    
+                                                                    <!-- modal footer -->
+                                                                    <div class="modal-footer">
+                                                                        <input type="submit" class = "btn btn-danger" name = "publish" value = "Submit">
+                                                                    </div>
+                                                               </form>        
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                
+                                            </tr>
+                                        <?php 
+                                        $serial_no++;
+                                    }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php include('main_editor_footer.php')?>
+<?php 
+    if(isset($_POST['publish']))
+    {
+        $id_new_paper = $_POST['id_new_paper'];
+        $paper_title = $_POST['paper_title'];
+        $author_id = $_POST['author_id'];
+        $volume = $_POST['volume'];
+        $issue = $_POST['issue'];
+        
+        // author_id theke author er email niye aste hobe
+        $select_author_email = "SELECT `author_email` FROM `author_information` WHERE `id` = '$author_id'";
+        $run_select_author_email = mysqli_query($conn, $select_author_email);
+        $res_select_author_email = mysqli_fetch_assoc($run_select_author_email);
+        
+        // pubished_status = 1 mane paper publish hoye gese.
+        $publish_new_paper = "UPDATE `new_paper` SET `volume_info` = '$volume', `issue_info` = '$issue', `published_status` = '1' WHERE `id` = '$id_new_paper'";
+        $run_publish_new_paper = mysqli_query($conn, $publish_new_paper);
+        if($run_publish_new_paper)
+        {
+            $receiver = $res_select_author_email['author_email'];
+            $subject = "Approval as an Reviewer";
+            $body = '<h5>Dear Sir/Madam, <br /> Your Paper Title: '.$paper_title.'. has been published in our site. Please visit our site.<br /> <br /> Best Regards, JKKNIU Journal Organization</h5>';
+            $send_mail = send_mail($receiver, $subject, $body);
+        }
+        ?>
+            <script>
+                window.alert("A Mail Has Been Sent To The Author");
+                window.location = "publish_paper_m_e.php";
+            </script>
+        <?php 
+    }
+    
+    
+?>
