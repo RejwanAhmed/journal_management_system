@@ -122,7 +122,7 @@ INSERT INTO `main_editor_information` (`id`, `main_editor_name`, `main_editor_de
 
 CREATE TABLE `new_paper` (
   `id` int(11) NOT NULL,
-  `paper_id` varchar(200) NOT NULL DEFAULT current_timestamp(),
+  `paper_id` varchar(200) NOT NULL,
   `author_id` int(11) NOT NULL,
   `associative_editor_id` varchar(200) NOT NULL,
   `reviewer_id` varchar(200) NOT NULL,
@@ -142,7 +142,7 @@ CREATE TABLE `new_paper` (
   `count` int(11) NOT NULL,
   `volume_info` varchar(200) DEFAULT NULL,
   `issue_info` varchar(200) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `created_at` timestamp NOT NULL DEFAULT 0,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `published_status` enum('0','1') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
