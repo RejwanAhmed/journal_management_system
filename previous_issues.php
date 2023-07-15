@@ -9,7 +9,7 @@
             <div class="card-body">
             
                 <?php 
-                    $find_all_volumes_and_issues = "SELECT * FROM `new_paper` WHERE (`volume_info` != '' OR `issue_info` != '') GROUP BY `volume_info`, `issue_info`";
+                    $find_all_volumes_and_issues = ""SELECT `volume_info`, `issue_info`, COUNT(*) AS total_papers FROM `new_paper` WHERE (`volume_info` != '' OR `issue_info` != '') GROUP BY `volume_info`, `issue_info`";
                     $run_find_all_volumes_and_issues = mysqli_query($conn, $find_all_volumes_and_issues);
                     
                     if(mysqli_num_rows($run_find_all_volumes_and_issues)>0)
